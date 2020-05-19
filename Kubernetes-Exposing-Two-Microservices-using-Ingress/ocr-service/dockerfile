@@ -10,15 +10,17 @@ WORKDIR /api
 #dowloads the package lists form the repositories and 'updates' them to get incormation on the newsest versions of packages and their dependancies
 RUN apt-get update 
 
-# update conda and create the environment
-RUN conda update -n base conda -y && conda env update --name spacy --file environment.yml
+#temporary folder for writing uploaded files
+RUN mkdir -p tmp
 
-# activate spacy environment
-RUN echo "source activate spacy" > ~/.bashrc
-ENV PATH /opt/conda/envs/spacy/bin:$PATH
+# create the environment
+RUN conda update -n base conda -y && conda env update --name ocr --file environment.yml
 
-# download model
-RUN python -m spacy download en_core_web_sm
+RUN echo "source activate ocr" > ~/.bashrc
+ENV PATH /opt/conda/envs/ocr/bin:$PATH
 
-# run the gunicorn command to start the service in docker
+# RUN pip install gunicorn
+RUN pip install Flask-CORS
+
+# run the gunicorn command to start the api in docker
 CMD ["gunicorn", "-w", "1", "-b", ":5000", "-t", "360", "wsgi:app"]

@@ -11,7 +11,7 @@ WORKDIR /api
 RUN apt-get update 
 
 # update conda and create the environment
-RUN conda update -n base conda -y && conda env update --name spacy --file environment.yml
+RUN conda update -n base conda -y && conda env update --name spacy --file environment.yml && conda clean -afy
 
 # activate spacy environment
 RUN echo "source activate spacy" > ~/.bashrc

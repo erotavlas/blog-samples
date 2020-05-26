@@ -11,15 +11,14 @@ WORKDIR /api
 RUN apt-get update 
 
 #temporary folder for writing uploaded files
-RUN mkdir -p tmp
+#RUN mkdir -p tmp
 
 # create the environment
-RUN conda update -n base conda -y && conda env update --name ocr --file environment.yml
+RUN conda update -n base conda -y && conda env update --name ocr --file environment.yml && conda clean -afy
 
 RUN echo "source activate ocr" > ~/.bashrc
 ENV PATH /opt/conda/envs/ocr/bin:$PATH
 
-# RUN pip install gunicorn
 RUN pip install Flask-CORS
 
 # run the gunicorn command to start the api in docker

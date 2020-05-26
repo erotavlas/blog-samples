@@ -1,0 +1,17 @@
+apiVersion: networking.k8s.io/v1beta1 
+kind: Ingress 
+metadata: 
+  name: ingress 
+spec: 
+  rules: 
+  - host: demo.local 
+    http: 
+      paths: 
+      - path: /ocr 
+        backend: 
+          serviceName: ocr-service 
+          servicePort: 80 
+      - path: /entities 
+        backend: 
+          serviceName: ner-service 
+          servicePort: 80

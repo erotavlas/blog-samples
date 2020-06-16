@@ -1,0 +1,33 @@
+apiVersion: v1 
+kind: Service 
+metadata: 
+  name: ocr-service 
+spec: 
+  selector: 
+    run: ocr 
+  ports: 
+    - port: 80 
+      targetPort: 5000 
+ 
+--- 
+ 
+apiVersion: apps/v1 
+kind: Deployment 
+metadata: 
+  name: ocr-deployment 
+spec: 
+  replicas: 1 
+  selector: 
+    matchLabels: 
+      run: ocr 
+  template: 
+    metadata: 
+      labels: 
+        run: ocr 
+    spec: 
+      containers: 
+        - name: ocr 
+          image: ocr:latest
+          imagePullPolicy: IfNotPresent 
+          ports: 
+          - containerPort: 5000 

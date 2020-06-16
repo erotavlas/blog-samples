@@ -1,0 +1,1 @@
+this is just a temporary directory used to store downloaded files for processing through ocr

@@ -1,0 +1,25 @@
+#sets the base image for subsequent instructions
+FROM continuumio/miniconda3
+
+#copy files into the container
+COPY ./api /api
+
+#set the current working directory
+WORKDIR /api
+
+#dowloads the package lists form the repositories and 'updates' them to get incormation on the newsest versions of packages and their dependancies
+RUN apt-get update 
+
+#temporary folder for writing uploaded files
+#RUN mkdir -p tmp
+
+# create the environment
+RUN conda update -n base conda -y && conda env update --name ocr --file environment.yml && conda clean -afy
+
+RUN echo "source activate ocr" > ~/.bashrc
+ENV PATH /opt/conda/envs/ocr/bin:$PATH
+
+RUN pip install Flask-CORS
+
+# run the gunicorn command to start the api in docker
+CMD ["gunicorn", "-w", "1", "-b", ":5000", "-t", "360", "wsgi:app"]

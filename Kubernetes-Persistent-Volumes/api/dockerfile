@@ -1,0 +1,21 @@
+#sets the base image for subsequent instructions
+FROM continuumio/miniconda3
+
+#copy files into the container
+COPY . /api
+
+#set the current working directory
+WORKDIR /api
+
+#dowloads the package lists form the repositories and 'updates' them to get incormation on the newsest versions of packages and their dependancies
+RUN apt-get update 
+
+# create the environment
+RUN conda update -n base conda -y && conda env update --name spacy --file env.yaml && conda clean -afy
+
+RUN echo "source activate spacy" > ~/.bashrc
+ENV PATH /opt/conda/envs/spacy/bin:$PATH
+
+# run the gunicorn command to start the api in docker
+# moved to nginx conf when using docker-compose and nginx
+CMD ["gunicorn", "-w", "1", "-b", ":5000", "-t", "360", "wsgi:app"]

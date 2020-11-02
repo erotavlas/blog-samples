@@ -1,0 +1,12 @@
+kind: Service
+apiVersion: v1
+metadata:
+  name: my-service
+spec:
+  selector:
+    ner: latest
+  ports:
+  - protocol: TCP
+    port: 5000
+    nodePort: 32321
+  type: NodePort

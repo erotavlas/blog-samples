@@ -1,0 +1,28 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ner-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      ner: latest
+  template:
+    metadata:
+      labels:
+        ner: latest
+    spec:
+      containers:
+      - name: ner-container
+        image: ner:latest
+        imagePullPolicy: Never
+        ports:
+        - containerPort: 5000
+        volumeMounts:
+        - mountPath: "/ner"
+          name: ner-pv-storage
+      volumes:
+      - name: ner-pv-storage
+        persistentVolumeClaim:
+          claimName: ner-pv-claim
+        

@@ -1,4 +1,4 @@
 # blog-samples
-sample code used in blog posts
+Sample code used in blog posts
 
 https://salvatore.netlify.app/
